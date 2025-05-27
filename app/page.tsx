@@ -20,7 +20,7 @@ const page = () => {
         id="321"
         name="Countsy the Number Wizard"
         topic="Derivatives & Integrals"
-        subject="MAths"
+        subject="Maths"
         duration={30}
         color="#e5d0ff"
         />
