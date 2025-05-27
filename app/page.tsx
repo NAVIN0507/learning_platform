@@ -1,6 +1,7 @@
 import ComapnaionsList from '@/components/ComapnaionsList'
 import CompanianCard from '@/components/CompanianCard'
 import CTA from '@/components/CTA'
+import { recentSessions } from '@/constants'
 import React from 'react'
 
 const page = () => {
@@ -34,7 +35,11 @@ const page = () => {
         />
        </section>
        <section className='home-section'>
-        <ComapnaionsList/>
+        <ComapnaionsList
+        title="Recently completed sessions"
+        comapanions={recentSessions}
+        classNames="w-2/3 max-lg:w-full"
+        />
         <CTA/>
        </section>
     </main>
