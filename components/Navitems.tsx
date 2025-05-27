@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import React from 'react'
 const navItems = [
     {label:'Home' , href:'/'},
-    {label:'Companions' , href:'/companions'},
+    {label:'Learning Companions' , href:'/companions'},
     {label:'My Journy' , href:'my-journy'}
 ]
 const Navitems = () => {
