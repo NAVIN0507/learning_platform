@@ -14,7 +14,7 @@ const Navitems = () => {
   {navItems.map(({label , href})=>{
     const isActive = pathName === href
     return(
-    <Link href={href} key={label}> <span className={`${isActive ?'text-primary font-semibold':''}`}>{label}</span></Link>
+    <Link href={href} key={label}> <span className={`${isActive ?' bg-orange-500 text-white p-2 rounded-lg font-semibold':''}`}>{label}</span></Link>
 )})}
   </nav>
   )
