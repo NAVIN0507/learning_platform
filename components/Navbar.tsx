@@ -25,6 +25,7 @@ const Navbar = () => {
             </div>
         </SignedOut>
         <SignedIn>
+            
             <UserButton afterSignOutUrl='/'/>
         </SignedIn>
     </div>

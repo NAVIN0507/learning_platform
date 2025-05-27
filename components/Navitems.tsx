@@ -10,7 +10,7 @@ const navItems = [
 const Navitems = () => {
     const pathName = usePathname();
   return (
-  <nav className='flex items-center gap-4'>
+  <nav className='flex items-center gap-4 max-sm:hidden'>
   {navItems.map(({label , href})=>{
     const isActive = pathName === href
     return(

@@ -224,8 +224,32 @@ body {
     scrollbar-width: none;
   }
 }
-
+.cl-internal-1dauvpw{
+  width: 0;
+  height: 0;
+  padding: 0;
+}
 .cl-internal-1dauvpw .cl-internal-df7v37{
   display: none;
   border: none;
+
+}
+.cl-avatarImage .cl-userButtonAvatarImage {
+  size: 200px;
+}
+.cl-internal-df7v37{
+  display: none;
+}
+.cl-internal-1hp5nqm{
+  width: 0;
+  height: 0;
+  padding: 0;
+}
+.cl-footer{
+  width: 0;
+  height: 0;
+  padding: 0;
+}
+.cl-card {
+  border: orange;
 }
