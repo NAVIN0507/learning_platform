@@ -22,6 +22,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { subjects } from "@/constants"
 import { Textarea } from "./ui/textarea"
+import { createCompanion } from "@/lib/companion.action"
+import { redirect } from "next/navigation"
 const formSchema = z.object({
   name: z.string().min(1 , {message:'Companion is required'}),
   subject: z.string().min(1 , {message:'Subject is required'}),
@@ -30,7 +32,7 @@ const formSchema = z.object({
   style: z.string().min(1 , {message:'Style is required'}),
   duration: z.coerce.number().min(1 , {message:'Duration is required'}),
 })
-const CompanionForm = () => {
+const CompanionForm = (userId:string) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -45,7 +47,13 @@ const CompanionForm = () => {
      
       // 2. Define a submit handler.
       const onSubmit =  async(values: z.infer<typeof formSchema>)=> {
-        console.log(values)
+        const addCompanion = await createCompanion(values);
+        if(addCompanion){
+            redirect(`/companions/${addCompanion.id}`)
+        }
+        else{
+            console.log("Failed to Create Complanion")
+        }
       }
   return (
     <Form {...form}>
