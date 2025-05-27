@@ -25,7 +25,7 @@ const CompanianCard = ({id , name , topic , subject , duration , color}:Compania
         <p className='text-sm'>{duration} mins duration</p>
     </div>
     <Link href={`/companions/${id}`} className='w-full'>
-    <button className='btn-primary w-full justify-center'>
+    <button className='btn-primary w-full justify-center bg-orange-500'>
         Launch Lesson
         </button></Link>
   </article>
