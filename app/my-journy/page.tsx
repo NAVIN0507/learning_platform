@@ -9,6 +9,7 @@ import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation';
 import { getUserCompanion, getUserSession } from '@/lib/companion.action';
 import Image from 'next/image';
+import ComapnaionsList from '@/components/ComapnaionsList';
 
 const Profile = async() => {
   const user = await currentUser();
@@ -35,18 +36,24 @@ const Profile = async() => {
         </div>
         <div className='border border-black rounded-lg p-3 gap-2 flex flex-col h-fit'>
           <div className='flex gap-2 items-center'>
-            <Image src={"/icons/check.svg"} alt='check' width={22} height={22}/>
+            <Image src={"/icons/cap.svg"} alt='check' width={22} height={22}/>
             <p className='text-2xl font-bold'>{companions.length}</p>
           </div>
-          <div>Companions</div>
+          <div>Companions created</div>
         </div>
       </div>
     </section>
-    <Accordion type="single" collapsible>
-  <AccordionItem value="item-1">
-    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <Accordion type="multiple" >
+  <AccordionItem value="recent">
+    <AccordionTrigger className='text-2xl font-bold'>Recent Sessions</AccordionTrigger>
     <AccordionContent>
-      Yes. It adheres to the WAI-ARIA design pattern.
+    <ComapnaionsList title='Recent Sessions' comapanions={sessionHistory} classNames=''/>
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="companions">
+    <AccordionTrigger className='text-2xl font-bold'>My Companions {`(${companions.length})`}</AccordionTrigger>
+    <AccordionContent>
+    <ComapnaionsList title='My Companions' comapanions={companions} classNames=''/>
     </AccordionContent>
   </AccordionItem>
 </Accordion>

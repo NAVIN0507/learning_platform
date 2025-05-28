@@ -71,3 +71,7 @@ export const getUserCompanion = async(userId:string)=>{
     if(error) throw new Error(error?.message);
     return data;
 }
+
+export const newCompanionPermissions = async()=>{
+    
+}

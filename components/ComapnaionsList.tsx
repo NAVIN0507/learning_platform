@@ -20,7 +20,7 @@ interface ComapnaionsListProps {
 const ComapnaionsList = ({title , comapanions , classNames}:ComapnaionsListProps) => {
   return (
    <article className={cn('companion-list' , classNames)}>
-    <h2 className='font-bold text-3xl'>Recent Learnings</h2>
+    <h2 className='font-bold text-3xl'>{title}</h2>
     <Table>
   <TableHeader className=''>
     <TableRow className='border-0'>
