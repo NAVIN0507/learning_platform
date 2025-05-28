@@ -3,6 +3,7 @@ import SearchInput from '@/components/SearchInput';
 import SubjectFilter from '@/components/SubjectFilter';
 import { getAllCompanions } from '@/lib/companion.action';
 import { getSubjectColor } from '@/lib/utils';
+import { redirect } from 'next/navigation';
 import React from 'react'
 
 const ComapanionsLibrary = async({searchParams}:SearchParams) => {
@@ -10,6 +11,7 @@ const ComapanionsLibrary = async({searchParams}:SearchParams) => {
   const subject = filter.subject ? filter.subject : '';
   const topic = filter.topic ? filter.topic :'';
   const companions = await getAllCompanions({subject , topic});
+  if(!companions) return redirect("/")
   console.log(companions)
   return (
    <main>

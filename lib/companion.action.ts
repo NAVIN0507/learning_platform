@@ -37,6 +37,7 @@ export const getCompanion  = async(id:string)=>{
     const supabase = createSupaBaseClient();
 const {data : companion , error} =     await supabase.from("companions").select()
     .eq('id' , id);
-    if(error) throw new Error('cannnot get companion' , error);
-    return companion;
+    if(error) console.log(error);
+    if(!companion) return null;
+    return companion[0];
 }
