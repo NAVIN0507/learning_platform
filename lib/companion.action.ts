@@ -64,4 +64,10 @@ export const getUserSession  = async(userId:string , limit = 10)=>{
     const {data , error} = await supabase.from('session_history').select(`companions:companion_id (*)`).eq('user_id' , userId).order('created_at' , {ascending:false})
     if(error) throw new Error(error?.message);
     return data.map(({companions})=>companions);
+} 
+export const getUserCompanion = async(userId:string)=>{
+    const supabase = createSupaBaseClient();
+    const {data , error} = await supabase.from('companions').select()
+    if(error) throw new Error(error?.message);
+    return data;
 }
