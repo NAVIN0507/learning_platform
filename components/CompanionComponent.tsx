@@ -27,7 +27,8 @@ enum CallStatus{
 const CompanionComponent = ({name , topic , companionId  , voice , style ,  userImage , userName, subject, title , duration}:CompanionComponentPageProps) => {
   const [callStatus, setcallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [isSpeaking, setisSpeaking] = useState(false);
-  const lottieRef = useRef<LottieRefCurrentProps>(null);;
+  const lottieRef = useRef<LottieRefCurrentProps>(null);
+  const [messages, setmessages] = useState<SavedMessage[]>([])
   const [isMuted, setisMuted] = useState(false)
   useEffect(()=>{
     if(lottieRef){
@@ -42,7 +43,12 @@ const CompanionComponent = ({name , topic , companionId  , voice , style ,  user
   useEffect(()=>{
     const onCallStart  = ()=>setcallStatus(CallStatus.ACTIVE);
     const onCallEnd = ()=>setcallStatus(CallStatus.FINISHED);
-    const onMessage =()=> {};
+    const onMessage =(message:Message)=> {
+        if(message.type === 'transcript' && message.transcriptType === 'final'){
+            const newMessage = {role:message.role , content:message.transcript};
+            setmessages((prev) => [newMessage , ...prev])
+        }
+    };
     const onSpeechStart = () => setisSpeaking(true);
     const onSpeechEnd = () => setisSpeaking(false);
     const onError = (error:Error) => console.log(error);
@@ -121,7 +127,18 @@ const CompanionComponent = ({name , topic , companionId  , voice , style ,  user
     </section>
     <section className='transcript'>
         <div className='transcript-message no-scrollbar'>
-            MESSAGES
+           {messages.map((message)=>{
+            if(message.role === 'assistant'){
+                return(
+                    <p key={message.content} className='max-sm:text-sm'>{name.split('')[0].replace('/[.,]/g' , '')}:{message.content}</p>
+                )
+            }
+            else{
+              return(  <p key={message.content} className='text-primary max-sm:text-sm'>
+                    {userName} :{message.content}
+                </p>)
+            }
+           })}
         </div>
         <div className='transcript-fade'/> 
     </section>
