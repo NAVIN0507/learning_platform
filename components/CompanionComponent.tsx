@@ -1,10 +1,11 @@
 "use client"
-import { cn, getSubjectColor } from '@/lib/utils';
+import { cn, configureAssistant, getSubjectColor } from '@/lib/utils';
 import { vapi } from '@/lib/vapi.sdk';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react'
 import soundwaves  from "@/constants/soundwaves.json"
+import { Repeat } from 'lucide-react';
 interface CompanionComponentPageProps{
     name:string;
     topic:string;
@@ -14,6 +15,8 @@ interface CompanionComponentPageProps{
     companionId:string;
     userName:string;
     userImage:string;
+    voice:string;
+    style:string;
 }
 enum CallStatus{
     INACTIVE='INACTIVE',
@@ -21,7 +24,7 @@ enum CallStatus{
     ACTIVE='ACTIVE',
     FINISHED='FINISHED'
 }
-const CompanionComponent = ({name , topic , companionId  , userImage , userName, subject , title , duration}:CompanionComponentPageProps) => {
+const CompanionComponent = ({name , topic , companionId  , voice , style ,  userImage , userName, subject, title , duration}:CompanionComponentPageProps) => {
   const [callStatus, setcallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [isSpeaking, setisSpeaking] = useState(false);
   const lottieRef = useRef<LottieRefCurrentProps>(null);;
@@ -61,8 +64,21 @@ const CompanionComponent = ({name , topic , companionId  , userImage , userName,
     vapi.setMuted(!isMuted);
     setisMuted(!isMuted)
   }
-  const handleConnect = async()=>{}
-  const handelDisconnect = async()=>{}
+  const handleConnect = async()=>{
+    setcallStatus(CallStatus.CONNECTING)
+    const assistentOverrides = {
+        variableValues:{
+            subject , topic , style
+        },
+        clientMessages :['transcript'],
+        serverMessages:[],
+    }//@ts-ignore
+    vapi.start(configureAssistant(voice , style) , assistentOverrides)
+  }
+  const handelDisconnect = async()=>{
+    setcallStatus(CallStatus.FINISHED)
+    vapi.stop()
+  }
   return (
  <section className='flex flex-col h-[70vh]'>
     <section className='flex gap-8 max-sm:flex-col'>
@@ -86,16 +102,28 @@ const CompanionComponent = ({name , topic , companionId  , userImage , userName,
                 <Image src={userImage} alt='user' width={130} height={130} className='rounded-xl'/>
                 <p className='font-bold text-2xl'>{userName}</p>
             </div>
+            <div className='flex gap-2'>
             <button className='btn-mic' onClick={toggleMicrophone}>
                 <Image src={isMuted ? '/icons/mic-off.svg':'/icons/mic-on.svg'} alt='mic' width={36} height={36}/>
                 <p className='max-sm:hidden'>{isMuted? 'Turn on MicroPhone' :'Turn off MicroPhone'}</p>
             </button>
+            <button className='btn-mic' onClick={handleConnect}>
+                <Repeat className='mt-3'/>
+                <p className='max-sm:hidden'>Repeat the session</p>
+            </button>
+            </div>
             <button className={cn('rounded-lg py-2 cursor-pointer transition-colors w-full text-white' , callStatus===CallStatus.ACTIVE ? 'bg-red-700':'bg-orange-500' , callStatus===CallStatus.CONNECTING && 'animate-pulse')}
             onClick={callStatus===CallStatus.ACTIVE ? handelDisconnect : handleConnect}
             >
                 {callStatus === CallStatus.ACTIVE ? "End Lesson" : callStatus === CallStatus.CONNECTING ? "Connecting..." :  'Start Lesson'}
             </button>
         </div>
+    </section>
+    <section className='transcript'>
+        <div className='transcript-message no-scrollbar'>
+            MESSAGES
+        </div>
+        <div className='transcript-fade'/> 
     </section>
  </section>
   )
