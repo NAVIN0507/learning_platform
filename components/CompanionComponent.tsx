@@ -6,6 +6,7 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react'
 import soundwaves  from "@/constants/soundwaves.json"
 import { Repeat } from 'lucide-react';
+import { addtoSessionHistory } from '@/lib/companion.action';
 interface CompanionComponentPageProps{
     name:string;
     topic:string;
@@ -42,7 +43,11 @@ const CompanionComponent = ({name , topic , companionId  , voice , style ,  user
   },[isSpeaking , lottieRef])
   useEffect(()=>{
     const onCallStart  = ()=>setcallStatus(CallStatus.ACTIVE);
-    const onCallEnd = ()=>setcallStatus(CallStatus.FINISHED);
+    const onCallEnd = async()=>{
+        setcallStatus(CallStatus.FINISHED);
+        //addToSessioHistory
+        await addtoSessionHistory(companionId);
+    }
     const onMessage =(message:Message)=> {
         if(message.type === 'transcript' && message.transcriptType === 'final'){
             const newMessage = {role:message.role , content:message.transcript};

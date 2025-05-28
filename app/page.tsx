@@ -4,6 +4,7 @@ import CTA from '@/components/CTA'
 import { recentSessions } from '@/constants'
 import React from 'react'
 import { createSupaBaseClient } from '../lib/supabase';
+import { getAllCompanions  , getRecentsession} from '@/lib/companion.action'
 
 
 // (async () => {
@@ -17,38 +18,27 @@ import { createSupaBaseClient } from '../lib/supabase';
 // })();
 
 
-console.log(process.env.NEXT_PUBLIC_SUPABASE_URL);
-console.log(process.env.SUPABASE_SERVICE_ROLE_KEY);
+// console.log(process.env.NEXT_PUBLIC_SUPABASE_URL);
+// console.log(process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-const page = () => {
+const page = async() => {
+  const companions = await getAllCompanions({limit:3});
+  const recentSessionCompanions = await getRecentsession();
+  console.log(companions)
   return (
     <main>
        <h1 className='text-2xl'>Popular Companions</h1>
        <section className='home-section'>
-        <CompanianCard
-        id="123"
-        name="Neura the Brainy Explorer"
-        topic="Neural Network of the Brain"
-        subject="science"
-        duration={45}
-        color="#ffda6e"
+
+        {companions?.map((companion)=>(
+          <CompanianCard
+          key={companion.id}
+      {...companion}
+      color={companion.subject}
         />
-       <CompanianCard
-        id="321"
-        name="Countsy the Number Wizard"
-        topic="Derivatives & Integrals"
-        subject="Maths"
-        duration={30}
-        color="#e5d0ff"
-        />
-  <CompanianCard
-        id="789"
-        name="Verba the Vocabulary Builder"
-        topic="English Litrature"
-        subject="English"
-        duration={30}
-        color="#BDE7FF"
-        />
+        ))}
+        
+    
        </section>
        <section className='home-section'>
         <ComapnaionsList
