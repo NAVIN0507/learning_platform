@@ -109,7 +109,7 @@ const CompanionComponent = ({name , topic , companionId  , voice , style ,  user
                 <p className='font-bold text-2xl'>{userName}</p>
             </div>
             <div className='flex gap-2'>
-            <button className='btn-mic' onClick={toggleMicrophone}>
+            <button className='btn-mic' onClick={toggleMicrophone} disabled={callStatus!==CallStatus.ACTIVE}>
                 <Image src={isMuted ? '/icons/mic-off.svg':'/icons/mic-on.svg'} alt='mic' width={36} height={36}/>
                 <p className='max-sm:hidden'>{isMuted? 'Turn on MicroPhone' :'Turn off MicroPhone'}</p>
             </button>
