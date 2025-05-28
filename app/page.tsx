@@ -24,6 +24,7 @@ import { getAllCompanions  , getRecentsession} from '@/lib/companion.action'
 const page = async() => {
   const companions = await getAllCompanions({limit:3});
   const recentSessionCompanions = await getRecentsession();
+  console.table(recentSessionCompanions)
   console.log(companions)
   return (
     <main>
@@ -43,7 +44,7 @@ const page = async() => {
        <section className='home-section'>
         <ComapnaionsList
         title="Recently completed sessions"
-        comapanions={recentSessions}
+        comapanions={recentSessionCompanions}
         classNames="w-2/3 max-lg:w-full"
         />
         <CTA/>

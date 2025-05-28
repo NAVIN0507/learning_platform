@@ -57,11 +57,11 @@ export const getRecentsession  = async()=>{
     const supabase = createSupaBaseClient();
     const {data , error} = await supabase.from('session_history').select(`companions:companion_id (*)`).order('created_at' , {ascending:false})
     if(error) throw new Error(error?.message);
-    return data;
+    return data.map(({companions})=>companions);
 }
 export const getUserSession  = async(userId:string , limit = 10)=>{
     const supabase = createSupaBaseClient();
     const {data , error} = await supabase.from('session_history').select(`companions:companion_id (*)`).eq('user_id' , userId).order('created_at' , {ascending:false})
     if(error) throw new Error(error?.message);
-    return data;
+    return data.map(({companions})=>companions);
 }
