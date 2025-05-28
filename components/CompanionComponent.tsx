@@ -24,7 +24,8 @@ enum CallStatus{
 const CompanionComponent = ({name , topic , companionId  , userImage , userName, subject , title , duration}:CompanionComponentPageProps) => {
   const [callStatus, setcallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [isSpeaking, setisSpeaking] = useState(false);
-  const lottieRef = useRef<LottieRefCurrentProps>(null);
+  const lottieRef = useRef<LottieRefCurrentProps>(null);;
+  const [isMuted, setisMuted] = useState(false)
   useEffect(()=>{
     if(lottieRef){
         if(isSpeaking){
@@ -54,7 +55,14 @@ const CompanionComponent = ({name , topic , companionId  , userImage , userName,
         vapi.off('speech-start' , onSpeechStart);
         vapi.off('speech-end' , onSpeechEnd)
     }
-  } , [])
+  } , []);
+  const toggleMicrophone = ()=>{
+    const isMuted  = vapi.isMuted();
+    vapi.setMuted(!isMuted);
+    setisMuted(!isMuted)
+  }
+  const handleConnect = async()=>{}
+  const handelDisconnect = async()=>{}
   return (
  <section className='flex flex-col h-[70vh]'>
     <section className='flex gap-8 max-sm:flex-col'>
@@ -72,6 +80,21 @@ const CompanionComponent = ({name , topic , companionId  , userImage , userName,
                 </div>
             </div>
             <p className='font-bold text-2xl'>{name}</p>
+        </div>
+        <div className='user-section'>
+            <div className='user-avatar'>
+                <Image src={userImage} alt='user' width={130} height={130} className='rounded-xl'/>
+                <p className='font-bold text-2xl'>{userName}</p>
+            </div>
+            <button className='btn-mic' onClick={toggleMicrophone}>
+                <Image src={isMuted ? '/icons/mic-off.svg':'/icons/mic-on.svg'} alt='mic' width={36} height={36}/>
+                <p className='max-sm:hidden'>{isMuted? 'Turn on MicroPhone' :'Turn off MicroPhone'}</p>
+            </button>
+            <button className={cn('rounded-lg py-2 cursor-pointer transition-colors w-full text-white' , callStatus===CallStatus.ACTIVE ? 'bg-red-700':'bg-orange-500' , callStatus===CallStatus.CONNECTING && 'animate-pulse')}
+            onClick={callStatus===CallStatus.ACTIVE ? handelDisconnect : handleConnect}
+            >
+                {callStatus === CallStatus.ACTIVE ? "End Lesson" : callStatus === CallStatus.CONNECTING ? "Connecting..." :  'Start Lesson'}
+            </button>
         </div>
     </section>
  </section>
