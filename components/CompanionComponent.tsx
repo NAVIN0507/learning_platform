@@ -113,21 +113,26 @@ const CompanionComponent = ({name , topic , companionId  , voice , style ,  user
                 <Image src={userImage} alt='user' width={130} height={130} className='rounded-xl'/>
                 <p className='font-bold text-2xl'>{userName}</p>
             </div>
-            <div className='flex gap-2'>
+            <div className='flex flex-col gap-2 max-sm:flex-col w-full'>
+              <div className='flex gap-2 max-sm:flex-col'>
             <button className='btn-mic' onClick={toggleMicrophone} disabled={callStatus!==CallStatus.ACTIVE}>
                 <Image src={isMuted ? '/icons/mic-off.svg':'/icons/mic-on.svg'} alt='mic' width={36} height={36}/>
-                <p className='max-sm:hidden'>{isMuted? 'Turn on MicroPhone' :'Turn off MicroPhone'}</p>
+                <p className=''>{isMuted? 'Turn on MicroPhone' :'Turn off MicroPhone'}</p>
             </button>
             <button className='btn-mic' onClick={handleConnect}>
                 <Repeat className='mt-3'/>
-                <p className='max-sm:hidden'>Repeat the session</p>
+                <p className=''>Repeat the session</p>
             </button>
             </div>
-            <button className={cn('rounded-lg py-2 cursor-pointer transition-colors w-full text-white' , callStatus===CallStatus.ACTIVE ? 'bg-red-700':'bg-orange-500' , callStatus===CallStatus.CONNECTING && 'animate-pulse')}
+            <div className='w-full'>
+             <button className={cn('rounded-lg py-2 cursor-pointer transition-colors w-full text-white max-sm:w-full' , callStatus===CallStatus.ACTIVE ? 'bg-red-700':'bg-orange-500' , callStatus===CallStatus.CONNECTING && 'animate-pulse')}
             onClick={callStatus===CallStatus.ACTIVE ? handelDisconnect : handleConnect}
             >
                 {callStatus === CallStatus.ACTIVE ? "End Lesson" : callStatus === CallStatus.CONNECTING ? "Connecting..." :  'Start Lesson'}
             </button>
+            </div>
+            </div>
+           
         </div>
     </section>
     <section className='transcript'>
